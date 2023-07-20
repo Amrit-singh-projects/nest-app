@@ -1,11 +1,11 @@
-import { IsOptional, IsString, IsNumber, Min, Max, IsEmail, IsPhoneNumber, IsPostalCode } from 'class-validator';
+import { IsOptional, IsString, IsNumber, Min, Max, IsEmail, IsPhoneNumber, IsPostalCode, IsNotEmpty } from 'class-validator';
 
 export class UpdateUserDto {
 
   
-  @IsOptional()
+  @IsNotEmpty()
   @IsNumber()
-  readonly id :number;
+   id :number;
   
   @IsOptional()
   @IsString()
@@ -15,7 +15,7 @@ export class UpdateUserDto {
   @IsNumber()
   @Min(18)
   @Max(70)
-  age?: number;
+  age: number;
 
   @IsOptional()
   @IsEmail()

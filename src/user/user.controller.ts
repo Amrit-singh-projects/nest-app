@@ -24,16 +24,13 @@ export class UserController {
 
   @Get('/read_users')
   async findAll(): Promise<User[]> {
+
     const users = await this.userService.findAll();
-    
-    // const skippedRows = 15;
-    // const rowIndex = skippedRows;
-    // const user = users[rowIndex];
 
     // Populate the sheet with the user's data
     await this.googleSheetsService.populateData(users);
-
     return users;
+
   }
 
   @Get('/delete_user/:id')
@@ -45,33 +42,15 @@ export class UserController {
 
   @Post('/update_user')
   async updateUser(@Body() updateUserDto: UpdateUserDto): Promise<User> {
-    const userFromMongo = await this.userService.findById(updateUserDto.id);
-    if (!userFromMongo) {
-      throw new NotFoundException('User not found');
-    }
 
-    // Update the user object from MongoDB
-    const updatedUser = await this.userService.update(userFromMongo, updateUserDto);
+    const updatedUser = await  this.userService.updateUser(updateUserDto);
 
-    // Update the user data in the Google Sheet
-    await this.googleSheetsService.authenticate();
-    await this.googleSheetsService.loadSpreadsheet();
-    const rowToUpdate = await this.googleSheetsService.findRowByUserId(updatedUser.id);
-    if (rowToUpdate) {
-      await this.googleSheetsService.updateRowData(rowToUpdate, updatedUser);
-      await this.googleSheetsService.saveChanges();
-    }
-     // Remove the updated values from the Google Sheets table
-     if (rowToUpdate) {
-      await this.googleSheetsService.deleteRow(rowToUpdate);
-      await this.googleSheetsService.saveChanges();
-    }
-
-    return updatedUser;
-  }
-
- 
-  
+     // Populate the sheet with the user's data
+     await this.googleSheetsService.populateData([updatedUser]);
+    
+     return updatedUser;
+    
+  } 
 }
 
 

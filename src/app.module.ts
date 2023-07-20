@@ -4,13 +4,17 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { MongooseModule } from '@nestjs/mongoose';
 
+const db = "mongodb+srv://aksingh:nestapp@cluster0.9hrwmja.mongodb.net/crud-nest-app?retryWrites=true&w=majority";
+
+
+
 @Module({
   imports: [
     
     UserModule,
 
     // CONNECTION WITH DATABASE
-    MongooseModule.forRoot('mongodb://127.0.0.1:27017/user')
+    MongooseModule.forRoot(db)
   ],
   controllers: [AppController],
   providers: [AppService],

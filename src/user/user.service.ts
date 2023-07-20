@@ -1,11 +1,12 @@
 
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model,Types } from 'mongoose';
 import { User} from '../schema/user.schema';
 import { UpdateUserDto } from 'src/dto/updateUser.dto';
 import { CreateUserDto } from 'src/dto/createUser.dto';
 import * as casual from 'casual'
+
 
 
 
@@ -41,22 +42,50 @@ export class UserService {
 
   // DELETE USER
   async delete(id: number): Promise<User> {
-    return this.userModel.findOneAndDelete({ id }).exec();
+    
+    let removedUser = await this.userModel.findOneAndDelete({ id }).exec();
+    if(!removedUser){
+      throw new NotFoundException("User with id not found")
+    }
+    return removedUser;
+    
   }
 
-// UPDATE USER
-  async update(user: User, updateUserDto: UpdateUserDto): Promise<User> {
-    user.name = updateUserDto.name;
-    user.age = updateUserDto.age;
-    user.email = updateUserDto.email;
-    user.phone = updateUserDto.phone;
-    user.postal_code = updateUserDto.postal_code;
-    return this.userModel.findByIdAndUpdate(user.id, user, { new: true }).exec();
-  }
+  // UPDATE USER
+  async updateUser(updateUserDto: UpdateUserDto): Promise<User> {
+    const { id, name, age, email, phone, postal_code } = updateUserDto;
 
-  
-  async findById(id: number): Promise<User | null> {
-    return this.userModel.findOne({ id }).exec();
-  }
+    // Create a dynamic update object with the fields to be updated
+    const updateFields: Partial<User> = {};
+
+    if (name) {
+      updateFields.name = name;
+    }
+    if (age) {
+      updateFields.age = age;
+    }
+    if (email) {
+      updateFields.email = email;
+    }
+    if (phone) {
+      updateFields.phone = phone;
+    }
+    if (postal_code) {
+      updateFields.postal_code = postal_code;
+    }
+
+    try {
+      // Update the user with the specified fields
+      const updatedUser = await this.userModel.findOneAndUpdate({id}, updateFields);
+
+      if (!updatedUser) {
+        throw new Error('User not found.');
+      }
+      return updatedUser;
+    } catch (error) {
+      throw new Error('Invalid user ID or fields.');
+    }
+  } 
+ 
 }
 
