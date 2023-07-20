@@ -5,10 +5,7 @@ Its a complete backend project using Restful api.
 STEPS:  
 
 1. Clone this repository in your system.
-
-2. Create a file in src/config/credentials.json and store all the private keys for the Google sheet in that json file.
-
-   
+  
 ## Installation
 
 $ npm install  - for installing all the dependencies
@@ -25,6 +22,8 @@ $ npm run start:dev
  GET  `/read_users`  will read all the user objects and populate in the GOOGLE SHEETS in descending order.
  GET  `/delete_user/:id` which will delete user based on id
  POST `/update_user` will update the user field
+
+you can use postman or any other tools for these routes.
  
 
 
