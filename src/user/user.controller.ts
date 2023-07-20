@@ -44,7 +44,7 @@ export class UserController {
   async updateUser(@Body() updateUserDto: UpdateUserDto): Promise<User> {
 
     const updatedUser = await  this.userService.updateUser(updateUserDto);
-
+    
      // Populate the sheet with the user's data
      await this.googleSheetsService.populateData([updatedUser]);
     

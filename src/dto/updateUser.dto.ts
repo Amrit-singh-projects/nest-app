@@ -5,27 +5,27 @@ export class UpdateUserDto {
   
   @IsNotEmpty()
   @IsNumber()
-   id :number;
+  readonly id :number;
   
   @IsOptional()
   @IsString()
-  name?: string;
+  readonly name?: string;
 
   @IsOptional()
   @IsNumber()
   @Min(18)
   @Max(70)
-  age: number;
+  readonly age: number;
 
   @IsOptional()
   @IsEmail()
-  email?: string;
+  readonly email?: string;
 
   @IsOptional()
   @IsPhoneNumber('IN')
-  phone?: string;
+  readonly phone?: string;
 
   @IsOptional()
   @IsPostalCode('IN')
-  postal_code?: string;
+  readonly postal_code?: string;
 }

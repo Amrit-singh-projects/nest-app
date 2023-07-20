@@ -76,14 +76,18 @@ export class UserService {
 
     try {
       // Update the user with the specified fields
-      const updatedUser = await this.userModel.findOneAndUpdate({id}, updateFields);
+      const updatedUser = await this.userModel.findOneAndUpdate({id}, updateFields,{
+        new:true,
+        runValidators:true
+    } );
 
       if (!updatedUser) {
-        throw new Error('User not found.');
+        throw new NotFoundException('User not found.');
       }
       return updatedUser;
     } catch (error) {
-      throw new Error('Invalid user ID or fields.');
+      console.log(error)
+      throw new NotFoundException('Invalid user ID or fields.');
     }
   } 
  

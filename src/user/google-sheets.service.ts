@@ -33,12 +33,12 @@ import * as creds from '../config/credentials.json'
       await sheet.setHeaderRow(headerRow);
   
       // Prepare data rows
-      const dataRows = users.map(user => [
+      const dataRows: GoogleSpreadsheetRow[] = users.map(user => [
         user.id.toString(),
         user.name,
-        user.age,
+        user.age.toString(),
         user.email,
-        user.phone,
+        user.phone.toString(),
         user.postal_code,
       ]);
   
